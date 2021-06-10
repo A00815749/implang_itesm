@@ -287,8 +287,12 @@ layout = html.Div([
             dbc.Col(
                 html.H5('La bicicleta tiene enormes beneficios no sólo para la salud sino también para el medio ambiente, ya que se trata de un medio de transporte que favorece la movilidad sostenible.'), lg=9, md=3, sm=8
             ), 
-        ],className='py-3')
+        ],className='py-3'),
 
+        html.Iframe(src="../assets/qgis2web_2021_06_08-17_41_26_308204/map.html", style={"height": "600px", "width": "100%"})
+         #../qgis2web_2021_06_08-17_41_26_308204/map.html
+         #https://www.ons.gov.uk/visualisations/dvc914/map/index.html
+         
     ]),
 
    
