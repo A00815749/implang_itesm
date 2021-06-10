@@ -83,7 +83,7 @@ fig2 = go.Figure(go.Pie(labels=tip.index, values=tip.values, hole=.5))
 fig2.update_traces(hoverinfo='label+value', textinfo='percent', textfont_size=17, textfont_color="Black", marker=dict(colors=colors, line=dict(color='#FFFFFF', width=2)))
 fig2.add_annotation(align="center", text='Total =', showarrow=False, font=dict(size=16, color="Black"))
 fig2.add_annotation(align="center", text='<br> <br> <br> 39 Parques', showarrow=False, font=dict(size=20, color="Black"))
-fig2.update_layout(width=500,height=500, showlegend=False,hoverlabel=dict(font_size=16, font_color="Black"))
+fig2.update_layout(width=600,height=600, showlegend=True,hoverlabel=dict(font_size=16, font_color="Black"))
 
 #Limpieza de nombre y crea col Colonia
 avk1['DIRECCION'] = avk1['DIRECCION'].str.replace(' ,',',')
@@ -216,8 +216,7 @@ layout = html.Div([
 
 
     #INTRODUCCION
-    dbc.Container([
-        
+    dbc.Container([ 
         ## Títutlo
         dbc.Row(
             dbc.Col(
@@ -227,102 +226,94 @@ layout = html.Div([
         html.Img(src='../assets/montana.jpg', style={'max-width':'100%', 'height':'auto'}),
         ## Texto
         dbc.Row(
-            dbc.Col(
-                html.H2('¿Qué es el proyecto de Radiografía Urbana?')
-            ), className='px-1 py-4'
-        ),
-        dbc.Row(
-            dbc.Col(
+            dbc.Col([
+                html.H2('¿Qué es el proyecto de Radiografía Urbana?'),
                 html.H5('Siguiendo con el objetivo principal de IMPLANG sobre desarrollar planes, programas, proyectos estratégicos, políticas públicas y estrategias que fomenten el crecimiento de la ciudad hacia una visión donde sea reconocida por la accesibilidad, seguridad y sustentabilidad es que nace el proyecto Radiografía Urbana en donde se busca obtener un desarrollo urbano dentro del espacio público sobresaltando información sobre espacios públicos usables tales como parques, plazas, jardines y demás. '),
-            ), className='px-1 py-4'
+            ]), className='px-1 py-4'
         ),
         dbc.Row(
-            dbc.Col(
+            dbc.Col([
                 html.H3('San Pedro Garza García en el sector K1'),
-            ),className='py-3', style={'text-align': 'center'}
+            ]),className='py-3', style={'text-align': 'center'}
         ),
-        dbc.Button("Ver Mapa Completo", color="light", className="mr-1", href='../assets/qgis2web_2021_06_08-17_41_26_308204/map.html'),
-        html.Iframe(src="../assets/qgis2web_2021_06_08-17_41_26_308204/map.html", style={"height": "600px", "width": "100%"})
-         #../qgis2web_2021_06_08-17_41_26_308204/map.html
-         #https://www.ons.gov.uk/visualisations/dvc914/map/index.html
+        dbc.Row(
+            dbc.Col([
+                dbc.Button("Ver Mapa Completo", color="light", className="mr-1", href='../assets/qgis2web_2021_06_08-17_41_26_308204/map.html'),
+                html.Iframe(src="../assets/qgis2web_2021_06_08-17_41_26_308204/map.html", style={"height": "600px", "width": "100%"}),
+                #../qgis2web_2021_06_08-17_41_26_308204/map.html
+                #https://www.ons.gov.uk/visualisations/dvc914/map/index.html
+                html.H6('Los datos presentados sólo representan al sector K1 del municipio, siendo una prueba piloto para el proyecto Radiografía Urbana que buscará complementar los demás sectores de San Pedro. '),
+            ]),className='py-3'
+        )
+        
 
     ]),
 
     ## Contendor con graficas
     dbc.Container([
-        ## Títutlo de seccion
-        dbc.Row(
-            dbc.Col(
-                html.H2('Conociendo el área')
-            ), className='px-1 pt-4'
-        ),
-        ## descripción y gráficos
+        ## Títutlo de seccion, descripción y gráficos
         dbc.Row([
+            dbc.Col(
+                html.H2('Conociendo el área'), lg=12, md=12, sm=12
+            ),
             dbc.Col(
                 html.Img(src='../assets/matplotfigure.png', style={'height':'100%', 'width':'100%'}), lg=5, md=4, sm=4
             ),
             dbc.Col(
                 html.H5('El sector cuenta con un 17% de población lo cual es más del doble de las áreas verdes que se tienen, la importancia de estos espacios no sólo es que ayudan a combatir la contaminación en una ciudad sino también fomenta la vida al aire libre, mejorando la salud física y aumentar la conciencia ambiental. Es importante mencionar que existen diferentes categorías dentro de las mismas áreas verdes, parque de bolsillo, lineal, urbano y de barrio. En la gráfica de dona se muestra con más detalle '), lg=7, md=8, sm=8
             ), 
-        ],className='py-4'),
-        dbc.Row(
             dbc.Col(
-                html.H5('Es importante mencionar que existen diferentes categorías dentro de las mismas areas verdes, parque de bolsillo, lineal, urbano y de barrio. En la gráfica de dona se muestra con mas detalle ')
-            ), className='px-1 py-4'
-        ),
-        dbc.Row(
+                html.H5('Es importante mencionar que existen diferentes categorías dentro de las mismas areas verdes, parque de bolsillo, lineal, urbano y de barrio. En la gráfica de dona se muestra con mas detalle '), lg=12, md=12, sm=12
+            ), 
             dcc.Graph(id='figure2', figure=fig2)
-        ),
-         ## Títutlo de seccion
-        dbc.Row(
+        ],className='py-4'),
+       
+         ## Títutlo de seccion, descripción y gráfico
+         dbc.Row([
             dbc.Col(
-                html.H2('Conoce tu colonia ')
-            ), className='px-1 pt-4'
-        ),
-        ## descripción y gráfico
-        dbc.Row(
-            dbc.Col(
-                html.H5('A continución se muestra el TOP 10 de colonias que tienen más tipos de parques ')
-            ), className='px-1 py-4'
-        ),
-        dbc.Row(
-            dbc.Col(
-                dcc.Graph(id='figure3', figure=fig3)
-                #dcc.Graph(id='figure4', figure=fig4)
-            ), className='px-1 pt-4'),
-         ## Títutlo de seccion
-        dbc.Row(
-            dbc.Col(
-                html.H2('Accesibilidad ')
-            ), className='px-1 pt-4'
-        ),
-        ## descripción y gráfico
-        dbc.Row([
-            dbc.Col(
-                html.Img(src='../assets/wafflefigure.png', style={'height':'100%', 'width':'100%'}), lg=5, md=4, sm=4
+                html.H2('Conoce tu colonia '), lg=12, md=12, sm=12
             ),
             dbc.Col(
-                html.H5('Hoy en día cada 5 personas de 10 tienen acceso a un parque en menos de 400m. La gráfica de barras muestra algunos de los parques más importantes del área y el nivel de accesibilidad que tienen ¿Cuántos de esos partes conoces?'), lg=7, md=8, sm=8
-            )
-        ],className='py-3'),
-        dbc.Row(
-            dcc.Graph(id='figure5', figure=fig5)
-        ),
-        ## Títutlo de seccion
-        dbc.Row(
-            dbc.Col(
-                html.H2('Ranking de Parques')
-            ), className='px-1 pt-4'
-        ),
-        ## descripción y gráfico
+                html.H5('A continución se muestra el TOP 10 de colonias que tienen más tipos de parques '), lg=12, md=12, sm=12
+            ), 
+            dcc.Graph(id='figure3', figure=fig3)
+            #dcc.Graph(id='figure4', figure=fig4)
+        ],className='py-4'),
+
+         ## Títutlo de seccion, descripción y gráfico
         dbc.Row([
+            dbc.Col(
+                html.H2('Accesibilidad '), lg=12, md=12, sm=12
+            ),
+            dbc.Col(
+                html.Img(src='../assets/wafflefigure.png', style={'height':'100%', 'width':'100%'}), lg=5, md=5, sm=5
+            ),
+            dbc.Col(
+                html.H5('Hoy en día cada 5 personas de 10 tienen acceso a un parque en menos de 400m. La gráfica de barras muestra algunos de los parques más importantes del área y el nivel de accesibilidad que tienen ¿Cuántos de esos partes conoces?'), lg=7, md=7, sm=7
+            ),
+            dcc.Graph(id='figure5', figure=fig5)
+        ],className='py-4'),
+        ## Títutlo de seccion, descripción y gráfico
+        dbc.Row([
+            dbc.Col(
+                html.H2('Ranking de Parques'), lg=12, md=12, sm=12
+            ), 
             dbc.Col(
                 html.H5('El ranking mostrado fue calculado de acuerdo a la cantidad de servicios que se encuentran alrededor haciendo que los visitantes del parque disfruten mas el tiempo al aire libre'), lg=4, md=4, sm=4
             ),
             dbc.Col(
                 dcc.Graph(id='figure7', figure=fig7), lg=8, md=8, sm=8
             ), 
-        ],className='py-3')
+        ],className='py-4')
+    ]),
+
+    #CIERRE
+    dbc.Container([
+        dbc.Row(
+            dbc.Col([
+                html.H5('Esperamos que los ciudadanos encuentren esta información útil para poder descubrir las áreas verdes que se encuentran disponibles en el municipio y así poder disfrutarlas con actividades en el aire libre o convivir en armonía.'),
+            ]),className='py-3', style={'text-align': 'center'}
+        )
     ]),
     
    
