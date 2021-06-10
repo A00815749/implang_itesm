@@ -114,6 +114,7 @@ fig3.update_layout(
   showlegend=True,
   legend=dict(y=1.5 ,x=0)
 )
+fig3.update_traces(hoverinfo="name")
 
 #reset a la paleta para volverse a usar
 palettec = cycle(['#4478A6', '#519872', '#F2D544', '#F28907', '#F26B6B', '#54DEFD', '#B57BA6', '#D4A0A7', '#A69B8F', '#815E5B'])
