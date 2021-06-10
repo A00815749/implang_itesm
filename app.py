@@ -58,7 +58,7 @@ app.layout = dbc.Container([
 	dbc.NavbarSimple(
 		[
 
-        	dbc.Button('ITESM', href='/apps/itesm', color='light'),
+        	dbc.Button('PROYECTOS', href='/apps/proyectos', color='light'),
 
 		],
 		brand='IMPLANG',
@@ -76,7 +76,7 @@ app.layout = dbc.Container([
 			[Input(component_id='url', component_property='pathname')])
 
 def display_page(pathname):
-	if pathname == '/apps/itesm':
+	if pathname == '/apps/proyectos':
 		return itesm.layout
 	else:
 		return home.layout

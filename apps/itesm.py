@@ -82,7 +82,7 @@ fig2 = go.Figure(go.Pie(labels=tip.index, values=tip.values, hole=.5))
 fig2.update_traces(hoverinfo='label+value', textinfo='percent', textfont_size=17, textfont_color="Black", marker=dict(colors=colors, line=dict(color='#FFFFFF', width=2)))
 fig2.add_annotation(align="center", text='Total =', showarrow=False, font=dict(size=16, color="Black"))
 fig2.add_annotation(align="center", text='<br> <br> <br> 39 Parques', showarrow=False, font=dict(size=20, color="Black"))
-fig2.update_layout(showlegend=False,hoverlabel=dict(font_size=16, font_color="Black"))
+fig2.update_layout(width=500,height=500, showlegend=False,hoverlabel=dict(font_size=16, font_color="Black"))
 
 #Limpieza de nombre y crea col Colonia
 avk1['DIRECCION'] = avk1['DIRECCION'].str.replace(' ,',',')
@@ -103,12 +103,15 @@ for index, new_df in coltip.groupby(level=0):
       line_color=next(palettec)
   ))
 fig3.update_layout(
+  width=800,
+  height=800,
   polar=dict(
     radialaxis=dict(
       visible=True,
       range=[0, 12]
     )),
-  showlegend=True
+  showlegend=True,
+  legend=dict(yanchor='top',xanchor='center')
 )
 
 #reset a la paleta para volverse a usar
@@ -126,12 +129,15 @@ for index, new_df in colxtip.groupby(level=0):
       line_color=next(palettec)
   ))
 fig4.update_layout(
+  width=800,
+  height=800,
   polar=dict(
     radialaxis=dict(
       visible=True,
       range=[0, 12]
     )),
-  showlegend=True
+  showlegend=True,
+  legend=dict(yanchor='top',xanchor='center')
 )
 
 #Genera # de cada tipo de servicio x Parque
@@ -156,15 +162,13 @@ fig5.update_xaxes(
         title_font = {"size": 20},
         )
 fig5.update_yaxes(
-        title_text = "Parques",
-        title_font = {"size": 20},
-        tickfont=dict(size=10)
+        tickfont=dict(size=8)
         )
 fig5.update_traces(hoverinfo="x+name")
-fig5.update_layout(barmode='stack', hoverlabel=dict(font_size=16, font_color="White"))
+fig5.update_layout(barmode='stack', hoverlabel=dict(font_size=16, font_color="White"), width=1200,height=600)
 
 #obtener el total de población de k1 con acceso a y su porcentaje
-ineavK1 = ineAV[ineAV['join_SECTOR'] == 'K1']
+ineavK1 = ineAV[(ineAV['join_SECTOR'] == 'K1') &(ineAV['distance'] < 0.00261)]
 ineavK1sum = ineavK1[['POBTOT']].sum().sum() #doble sum para convertir dtype a float
 ineAVsum = ineAV[['POBTOT']].sum().sum() #doble sum para convertir dtype a float
 porIAV = int(math.ceil((ineavK1sum/ineAVsum)*10)) #redondea hacia arriba para considerar personas completas
@@ -198,10 +202,6 @@ fig7.update_xaxes(
         title_text = "Parques",
         title_font = {"size": 18}
         )
-fig7.update_yaxes(
-        title_text = "# Personas con acceso",
-        title_font = {"size": 18}
-        )
 fig7.update_layout(
     hoverlabel=dict(font_size=16, font_color="White")
 )
@@ -211,90 +211,110 @@ fig7.update_traces(hoverinfo="y")
 layout = html.Div([
 
     ####################################### COMIENZA ESPACIO DE EDICIÓN #######################################
-
-    ## BANNER PRINCIPAL
-    
-    dbc.Row(
-        dbc.Col([
-            html.Img(src='../assets/imagen.png', style={'max-width':'100%', 'height':'auto'}),
-            html.H2('Ejemplo título banner',
-                style={'position': 'absolute', 'top': '50%', 'left': '50%',
-                'transform': 'translate(-50%, -50%)'})
-        ], style={'color': 'white', 'position': 'relative', 'text-align': 'center'})
-    ),
-
-    ## SECCIÓN 1
+#INTRODUCCION
     dbc.Container([
-        
         ## Títutlo
         dbc.Row(
             dbc.Col(
-                html.H2('Ejemplo de título')
-            ), className='px-1 pt-4'
+                html.H1('RADIOGRAFÍA URBANA')
+            ),className='py-3', style={'background-color': 'black','color': 'white', 'text-align': 'center'}
         ),
-
+        #PONER UNA FOTITO
         ## Texto
         dbc.Row(
             dbc.Col(
-                html.H5('La bicicleta tiene enormes beneficios no sólo para la salud sino también para el medio ambiente, ya que se trata de un medio de transporte que favorece la movilidad sostenible.')
-
-
+                html.H2('¿Qué es el proyecto de Radiografía Urbana?')
             ), className='px-1 py-4'
         ),
-        #FIGURAS Y GRAFICAS LAS PUSE AQUI
-        dbc.Row(
-            html.Img(src='../assets/matplotfigure.png')
-        ),
-
-        dbc.Row(
-            dcc.Graph(id='figure2', figure=fig2)
-        ),
-        dbc.Row(
-            dcc.Graph(id='figure3', figure=fig3)
-        ),
-        dbc.Row(
-            dcc.Graph(id='figure4', figure=fig4)
-        ),
-        dbc.Row(
-            dcc.Graph(id='figure5', figure=fig5)
-        ),
-        dbc.Row(
-            html.Img(src='../assets/wafflefigure.png')
-        ),
-        dbc.Row(
-            dcc.Graph(id='figure7', figure=fig7)
-        ),
-
-
-    ]),
-     
-
-
-    ## SECCION 2
-    dbc.Container([
-        # Título
         dbc.Row(
             dbc.Col(
-                html.H2('Otro ejemplo de título')
-                ),className='py-3', style={'background-color': 'black','color': 'white'}
-            ),
-
-        ## Texto
-        dbc.Row([
-            dbc.Col(
-                html.H5('La bicicleta tiene enormes beneficios no sólo para la salud sino también para el medio ambiente, ya que se trata de un medio de transporte que favorece la movilidad sostenible.'), lg=3, md=9, sm=4
-            ),
-            dbc.Col(
-                html.H5('La bicicleta tiene enormes beneficios no sólo para la salud sino también para el medio ambiente, ya que se trata de un medio de transporte que favorece la movilidad sostenible.'), lg=9, md=3, sm=8
-            ), 
-        ],className='py-3'),
-
+                html.H5('Siguiendo con el objetivo principal de IMPLAG sobre desarrollar planes, programas, proyectos estratégicos, políticas publicas y estrategias que fomenten el crecimiento de la ciudad hacia una visión donde sea reconocida por la accesibilidad, seguridad y sustentabilidad es que nace el proyecto Radiografía Urbana en donde se busca obtener un desarrollo urbano dentro del espacio publicó sobresaltando información sobre espacios públicos usables tales como parques, plazas, jardines y demás. San Pedro Garza García en el sector K1')
+            ), className='px-1 py-4'
+        ),
         html.Iframe(src="../assets/qgis2web_2021_06_08-17_41_26_308204/map.html", style={"height": "600px", "width": "100%"})
          #../qgis2web_2021_06_08-17_41_26_308204/map.html
          #https://www.ons.gov.uk/visualisations/dvc914/map/index.html
-         
+
     ]),
 
+    ## Contendor con graficas
+    dbc.Container([
+        ## Títutlo de seccion
+        dbc.Row(
+            dbc.Col(
+                html.H2('Conociendo el área')
+            ), className='px-1 pt-4'
+        ),
+        ## descripción y gráficos
+        dbc.Row([
+            dbc.Col(
+                html.Img(src='../assets/matplotfigure.png', style={'height':'100%', 'width':'100%'}), lg=5, md=4, sm=4
+            ),
+            dbc.Col(
+                html.H5('El sector cuenta con un 17% de poblacion lo cual es mas del doble de las areas verdes que se tienen, la importancia de estos espacios no solo es que ayudan a combatir la contaminación en una ciudad sino también fomenta la vida al aire libre, mejorando la salud física y aumentar la conciencia ambiental.  '), lg=7, md=8, sm=8
+            ), 
+        ],className='py-3'),
+        dbc.Row(
+            dbc.Col(
+                html.H5('Es importante mencionar que existen diferentes categorías dentro de las mismas areas verdes, parque de bolsillo, lineal, urbano y de barrio. En la gráfica de dona se muestra con mas detalle ')
+            ), className='px-1 py-4'
+        ),
+        dbc.Row(
+            dcc.Graph(id='figure2', figure=fig2)
+        ),
+         ## Títutlo de seccion
+        dbc.Row(
+            dbc.Col(
+                html.H2('Conoce tu colonia ')
+            ), className='px-1 pt-4'
+        ),
+        ## descripción y gráfico
+        dbc.Row(
+            dbc.Col(
+                html.H5('con su respectivo nivel de parques ')
+            ), className='px-1 py-4'
+        ),
+        dbc.Row(
+            dbc.Col(
+                dcc.Graph(id='figure3', figure=fig3)
+                #dcc.Graph(id='figure4', figure=fig4)
+            )
+        ,className='py-3'),
+         ## Títutlo de seccion
+        dbc.Row(
+            dbc.Col(
+                html.H2('Accecibilidad')
+            ), className='px-1 pt-4'
+        ),
+        ## descripción y gráfico
+        dbc.Row([
+            dbc.Col(
+                html.Img(src='../assets/wafflefigure.png', style={'height':'100%', 'width':'100%'}), lg=5, md=4, sm=4
+            ),
+            dbc.Col(
+                html.H5('Hoy en día cada 5 personas de 10 tienen acceso a un parque en menos de 400m. La gráfica de barras muestra algunos de los parques más importantes del área y el nivel de accesibilidad que tienen ¿Cuántos de esos partes conoces?'), lg=7, md=8, sm=8
+            )
+        ],className='py-3'),
+        dbc.Row(
+            dcc.Graph(id='figure5', figure=fig5)
+        ),
+        ## Títutlo de seccion
+        dbc.Row(
+            dbc.Col(
+                html.H2('Ranking de Parques')
+            ), className='px-1 pt-4'
+        ),
+        ## descripción y gráfico
+        dbc.Row([
+            dbc.Col(
+                html.H5('El ranking mostrado fue calculado de acuerdo a la cantidad de servicios que se encuentran al rededor haciendo que los visitantes del parque disfruten mas el tiempo al airee libre'), lg=4, md=4, sm=4
+            ),
+            dbc.Col(
+                dcc.Graph(id='figure7', figure=fig7), lg=8, md=8, sm=8
+            ), 
+        ],className='py-3')
+    ]),
+    
    
     ######################################## TERMINA ESPACIO DE EDICIÓN ########################################
 
