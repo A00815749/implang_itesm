@@ -3,7 +3,15 @@ import dash_core_components as dcc
 import dash_html_components as html
 import dash_bootstrap_components as dbc
 import plotly.express as px
-
+import matplotlib.pyplot as plt
+import numpy as np
+import math
+import plotly.graph_objects as go
+from matplotlib import cm
+from math import log10
+from pywaffle import Waffle
+from itertools import cycle
+import pandas as pd
 
 # App Layout
 
