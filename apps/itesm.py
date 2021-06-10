@@ -17,6 +17,7 @@ import pandas as pd
 import io
 import base64
 
+
 #Reading data
 #Areas Verdes
 av = pd.read_csv('bases/areas_verdes.csv')
@@ -89,7 +90,7 @@ avk1['DIRECCION'] = avk1['DIRECCION'].str.replace(' ,',',')
 col = avk1['DIRECCION'].str.split(",", n = 1, expand = True)
 avk1["COLONIA"]= col[0]
 #Genera de cuantos tipos de parque tiene cada colonia TOP 8
-coltip = avk1.groupby(['COLONIA','TIPOLOGIA']).count()[['NOMBRE_PARQUE']].sort_values(by= ['NOMBRE_PARQUE' ], ascending=False).head(10).unstack(fill_value=0).stack()
+coltip = avk1.groupby(['COLONIA','TIPOLOGIA']).count()[['NOMBRE_PARQUE']].sort_values(by= ['NOMBRE_PARQUE' ], ascending=False).head(13).unstack(fill_value=0).stack()
 # Labels de legenda
 categories = ['barrio','bolsillo','lineal','urbano']
 #Grafico de araña: Tipo de Paruqe x Colonia TOP 8
@@ -111,7 +112,7 @@ fig3.update_layout(
       range=[0, 12]
     )),
   showlegend=True,
-  legend=dict(yanchor='top',xanchor='center')
+  legend=dict(y=1.5 ,x=0)
 )
 
 #reset a la paleta para volverse a usar
@@ -129,15 +130,15 @@ for index, new_df in colxtip.groupby(level=0):
       line_color=next(palettec)
   ))
 fig4.update_layout(
-  width=800,
-  height=800,
+  width=950,
+  height=950,
   polar=dict(
     radialaxis=dict(
       visible=True,
       range=[0, 12]
     )),
   showlegend=True,
-  legend=dict(yanchor='top',xanchor='center')
+  legend=dict(y=-1,x=0)
 )
 
 #Genera # de cada tipo de servicio x Parque
@@ -211,15 +212,18 @@ fig7.update_traces(hoverinfo="y")
 layout = html.Div([
 
     ####################################### COMIENZA ESPACIO DE EDICIÓN #######################################
-#INTRODUCCION
+
+
+    #INTRODUCCION
     dbc.Container([
+        
         ## Títutlo
         dbc.Row(
             dbc.Col(
                 html.H1('RADIOGRAFÍA URBANA')
             ),className='py-3', style={'background-color': 'black','color': 'white', 'text-align': 'center'}
         ),
-        #PONER UNA FOTITO
+        html.Img(src='../assets/montana.jpg', style={'max-width':'100%', 'height':'auto'}),
         ## Texto
         dbc.Row(
             dbc.Col(
@@ -228,9 +232,15 @@ layout = html.Div([
         ),
         dbc.Row(
             dbc.Col(
-                html.H5('Siguiendo con el objetivo principal de IMPLAG sobre desarrollar planes, programas, proyectos estratégicos, políticas publicas y estrategias que fomenten el crecimiento de la ciudad hacia una visión donde sea reconocida por la accesibilidad, seguridad y sustentabilidad es que nace el proyecto Radiografía Urbana en donde se busca obtener un desarrollo urbano dentro del espacio publicó sobresaltando información sobre espacios públicos usables tales como parques, plazas, jardines y demás. San Pedro Garza García en el sector K1')
+                html.H5('Siguiendo con el objetivo principal de IMPLANG sobre desarrollar planes, programas, proyectos estratégicos, políticas públicas y estrategias que fomenten el crecimiento de la ciudad hacia una visión donde sea reconocida por la accesibilidad, seguridad y sustentabilidad es que nace el proyecto Radiografía Urbana en donde se busca obtener un desarrollo urbano dentro del espacio público sobresaltando información sobre espacios públicos usables tales como parques, plazas, jardines y demás. '),
             ), className='px-1 py-4'
         ),
+        dbc.Row(
+            dbc.Col(
+                html.H3('San Pedro Garza García en el sector K1'),
+            ),className='py-3', style={'text-align': 'center'}
+        ),
+        dbc.Button("Ver Mapa Completo", color="light", className="mr-1", href='../assets/qgis2web_2021_06_08-17_41_26_308204/map.html'),
         html.Iframe(src="../assets/qgis2web_2021_06_08-17_41_26_308204/map.html", style={"height": "600px", "width": "100%"})
          #../qgis2web_2021_06_08-17_41_26_308204/map.html
          #https://www.ons.gov.uk/visualisations/dvc914/map/index.html
@@ -251,9 +261,9 @@ layout = html.Div([
                 html.Img(src='../assets/matplotfigure.png', style={'height':'100%', 'width':'100%'}), lg=5, md=4, sm=4
             ),
             dbc.Col(
-                html.H5('El sector cuenta con un 17% de poblacion lo cual es mas del doble de las areas verdes que se tienen, la importancia de estos espacios no solo es que ayudan a combatir la contaminación en una ciudad sino también fomenta la vida al aire libre, mejorando la salud física y aumentar la conciencia ambiental.  '), lg=7, md=8, sm=8
+                html.H5('El sector cuenta con un 17% de población lo cual es más del doble de las áreas verdes que se tienen, la importancia de estos espacios no sólo es que ayudan a combatir la contaminación en una ciudad sino también fomenta la vida al aire libre, mejorando la salud física y aumentar la conciencia ambiental. Es importante mencionar que existen diferentes categorías dentro de las mismas áreas verdes, parque de bolsillo, lineal, urbano y de barrio. En la gráfica de dona se muestra con más detalle '), lg=7, md=8, sm=8
             ), 
-        ],className='py-3'),
+        ],className='py-4'),
         dbc.Row(
             dbc.Col(
                 html.H5('Es importante mencionar que existen diferentes categorías dentro de las mismas areas verdes, parque de bolsillo, lineal, urbano y de barrio. En la gráfica de dona se muestra con mas detalle ')
@@ -271,19 +281,18 @@ layout = html.Div([
         ## descripción y gráfico
         dbc.Row(
             dbc.Col(
-                html.H5('con su respectivo nivel de parques ')
+                html.H5('A continución se muestra el TOP 10 de colonias que tienen más tipos de parques ')
             ), className='px-1 py-4'
         ),
         dbc.Row(
             dbc.Col(
                 dcc.Graph(id='figure3', figure=fig3)
                 #dcc.Graph(id='figure4', figure=fig4)
-            )
-        ,className='py-3'),
+            ), className='px-1 pt-4'),
          ## Títutlo de seccion
         dbc.Row(
             dbc.Col(
-                html.H2('Accecibilidad')
+                html.H2('Accesibilidad ')
             ), className='px-1 pt-4'
         ),
         ## descripción y gráfico
@@ -307,7 +316,7 @@ layout = html.Div([
         ## descripción y gráfico
         dbc.Row([
             dbc.Col(
-                html.H5('El ranking mostrado fue calculado de acuerdo a la cantidad de servicios que se encuentran al rededor haciendo que los visitantes del parque disfruten mas el tiempo al airee libre'), lg=4, md=4, sm=4
+                html.H5('El ranking mostrado fue calculado de acuerdo a la cantidad de servicios que se encuentran alrededor haciendo que los visitantes del parque disfruten mas el tiempo al aire libre'), lg=4, md=4, sm=4
             ),
             dbc.Col(
                 dcc.Graph(id='figure7', figure=fig7), lg=8, md=8, sm=8
@@ -371,6 +380,3 @@ layout = html.Div([
     ], style={'background-color': 'black','color': 'white'}
     )
 ])
-
-
-
